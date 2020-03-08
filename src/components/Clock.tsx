@@ -4,6 +4,8 @@ import ClockFace from "./ClockFace";
 
 import { TimeModel } from "../models/time-model";
 
+import { WorldTimeApiResponseSchema } from "../models/time-types";
+
 const timeModel = new TimeModel();
 
 type Props = {};
@@ -18,8 +20,11 @@ class Clock extends Component<Props, State> {
 
     componentDidMount() {
         this.setState({ time: timeModel.Time });
-        const x = timeModel.getTime()
-        console.log(x)
+
+        fetch("http://worldtimeapi.org/api/timezone/Europe/London")
+            .then(res => res.json())
+            .then((json: WorldTimeApiResponseSchema) => this.setState({ time: json.datetime }));
+
     }
 
     render() {
