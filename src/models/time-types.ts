@@ -16,4 +16,4 @@ export type WorldTimeApiResponseSchema = {
     utc_datetime: string | null;
     utc_offset: string | null;
     week_number: number;
-}
+};

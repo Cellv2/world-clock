@@ -23,8 +23,9 @@ class Clock extends Component<Props, State> {
 
         fetch("http://worldtimeapi.org/api/timezone/Europe/London")
             .then(res => res.json())
-            .then((json: WorldTimeApiResponseSchema) => this.setState({ time: json.datetime }));
-
+            .then((json: WorldTimeApiResponseSchema) =>
+                this.setState({ time: json.datetime })
+            );
     }
 
     render() {
