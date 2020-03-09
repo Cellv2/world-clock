@@ -11,12 +11,16 @@ const timeModel = new TimeModel();
 type Props = {};
 type State = {
     time: string;
+    interval: number;
 };
 
 class Clock extends Component<Props, State> {
     state = {
-        time: "19:00"
+        time: "19:00",
+        interval: 1
     };
+
+    timer: any;
 
     componentDidMount() {
         this.setState({ time: timeModel.Time });
@@ -26,9 +30,17 @@ class Clock extends Component<Props, State> {
             .then((json: WorldTimeApiResponseSchema) =>
                 this.setState({ time: json.datetime })
             );
+
+        // setInterval(this.timerId, this.state.interval)
+        this.timer = setInterval(() => {
+            // console.log(timeModel.theTime())
+        }, 1000)
+
     }
 
+
     render() {
+        // console.log(timeModel.theTime())
         return (
             <>
                 <ClockFace time={this.state.time} />
