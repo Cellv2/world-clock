@@ -5,6 +5,7 @@ import ClockFace from "./ClockFace";
 import { TimeModel } from "../models/time-model";
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
+import { clearInterval } from "timers";
 
 const timeModel = new TimeModel();
 
@@ -33,6 +34,10 @@ class Clock extends Component<Props, State> {
                 time: tempTime
             }));
         }, 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 
     render() {
