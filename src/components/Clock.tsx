@@ -11,15 +11,13 @@ const timeModel = new TimeModel();
 type Props = {};
 type State = {
     time: WorldTimeApiResponseSchema;
-    interval: number;
 };
 
 class Clock extends Component<Props, State> {
-    timer: any;
+    timer!: NodeJS.Timeout;
 
     componentDidMount() {
         // this.setState({ time: timeModel.Time });
-        this.setState({ interval: 1000 });
 
         fetch("http://worldtimeapi.org/api/timezone/Europe/London")
             .then(res => res.json())
@@ -27,9 +25,13 @@ class Clock extends Component<Props, State> {
                 this.setState({ time: json })
             );
 
-        // setInterval(this.timerId, this.state.interval)
         this.timer = setInterval(() => {
-            // console.log(timeModel.theTime())
+            const tempTime = this.state.time;
+            tempTime.unixtime++;
+            this.setState(prevState => ({
+                ...prevState,
+                time: tempTime
+            }));
         }, 1000);
     }
 
