@@ -1,11 +1,17 @@
 import React from "react";
 
+import { WorldTimeApiResponseSchema } from "../models/time-types";
+
 type Props = {
-    time: string;
+    time: WorldTimeApiResponseSchema;
 };
 
 const ClockFace = (props: Props) => {
-    return <div>{props.time}</div>;
+    if (props.time) {
+        return <div>{props.time.unixtime}</div>;
+    }
+
+    return <div>Fetching time...</div>;
 };
 
 export default ClockFace;
