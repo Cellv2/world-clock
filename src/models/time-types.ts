@@ -8,7 +8,7 @@ export type WorldTimeApiResponseSchema = {
     day_of_year: number;
     dst: boolean;
     dst_from: string | null;
-    dst_offset: string | null;
+    dst_offset: number | null;
     dst_until: string | null;
     raw_offset: number;
     timezone: string;

@@ -19,11 +19,11 @@ class Clock extends Component<Props, State> {
 
     componentDidMount() {
         // this.setState({ time: timeModel.Time });
-
-        fetch("http://worldtimeapi.org/api/timezone/Europe/London")
+        const tZ = "America/Nassau";
+        fetch(`http://worldtimeapi.org/api/timezone/${tZ}`)
             .then(res => res.json())
             .then((json: WorldTimeApiResponseSchema) =>
-                this.setState({ time: json })
+                this.setState({ time: json }, () => console.log(json))
             );
 
         this.timer = setInterval(() => {

@@ -11,9 +11,11 @@ type Props = {
  */
 const ClockFace = (props: Props) => {
     if (props.time) {
-        const { unixtime } = props.time;
+        const { unixtime, raw_offset, dst_offset } = props.time;
 
-        const date = new Date(unixtime * 1000);
+        const adjustedTime = unixtime + raw_offset + (dst_offset || 0);
+
+        const date = new Date(adjustedTime * 1000);
         const hours = date.getHours();
         const mins = "0" + date.getMinutes();
         const secs = "0" + date.getSeconds();
