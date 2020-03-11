@@ -17,28 +17,18 @@ class Clock extends Component<Props, State> {
     timer!: NodeJS.Timeout;
 
     componentDidMount() {
-        const tZ = "America/Nassau";
+        const initialTZ = "Etc/UTC";
 
         fetch("http://worldtimeapi.org/api/timezone")
             .then(res => res.json())
             .then((json: string[]) =>
-                this.setState({ timeZones: json }, () => console.log(json))
+                this.setState(
+                    { timeZones: json, selectedTimeZone: initialTZ },
+                    () => console.log(json)
+                )
             );
 
-        fetch(`http://worldtimeapi.org/api/timezone/${tZ}`)
-            .then(res => res.json())
-            .then((json: WorldTimeApiResponseSchema) =>
-                this.setState({ time: json }, () => console.log(json))
-            );
-
-        this.timer = setInterval(() => {
-            const tempTime = this.state.time;
-            tempTime.unixtime++;
-            this.setState(prevState => ({
-                ...prevState,
-                time: tempTime
-            }));
-        }, 1000);
+        this.fetchTime(initialTZ);
     }
 
     componentWillUnmount() {
@@ -50,6 +40,9 @@ class Clock extends Component<Props, State> {
             .then(res => res.json())
             .then((json: WorldTimeApiResponseSchema) =>
                 this.setState({ time: json }, () => {
+
+                    console.log(json);
+
                     clearInterval(this.timer);
 
                     this.timer = setInterval(() => {
