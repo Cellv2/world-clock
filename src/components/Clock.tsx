@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { clearInterval } from "timers";
 
 import ClockFace from "./ClockFace";
 import TimeZoneSelect from "./TimeZoneSelect";
@@ -46,9 +45,30 @@ class Clock extends Component<Props, State> {
         clearInterval(this.timer);
     }
 
+    fetchTime = (tZ: string) => {
+        fetch(`http://worldtimeapi.org/api/timezone/${tZ}`)
+            .then(res => res.json())
+            .then((json: WorldTimeApiResponseSchema) =>
+                this.setState({ time: json }, () => {
+                    clearInterval(this.timer);
+
+                    this.timer = setInterval(() => {
+                        const tempTime = this.state.time;
+                        tempTime.unixtime++;
+                        this.setState(prevState => ({
+                            ...prevState,
+                            time: tempTime
+                        }));
+                    }, 1000);
+                })
+            );
+    }
+
     handleTimeZoneOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         event.preventDefault();
         event.persist();
+
+        this.fetchTime(event.target.value);
 
         this.setState(prevState => ({
             ...prevState,
