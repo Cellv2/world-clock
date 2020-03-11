@@ -19,10 +19,10 @@ const ClockFace = (props: Props) => {
     const adjustedTime = unixtime + raw_offset + (dst_offset || 0);
 
     const date = new Date(adjustedTime * 1000);
-    const hours = date.getHours();
+    const hours = "0" + date.getHours();
     const mins = "0" + date.getMinutes();
     const secs = "0" + date.getSeconds();
-    const formattedTime = hours + ":" + mins.substr(-2) + ":" + secs.substr(-2);
+    const formattedTime = hours.substr(-2) + ":" + mins.substr(-2) + ":" + secs.substr(-2);
 
     return <div>{formattedTime}</div>;
 };
