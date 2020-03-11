@@ -4,11 +4,8 @@ import { clearInterval } from "timers";
 import ClockFace from "./ClockFace";
 import TimeZoneSelect from "./TimeZoneSelect";
 
-import { TimeModel } from "../models/time-model";
-
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 
-// const timeModel = new TimeModel();
 
 type Props = {};
 type State = {
@@ -53,7 +50,6 @@ class Clock extends Component<Props, State> {
         event.preventDefault();
         event.persist();
 
-        console.log(event.target.value);
         this.setState(prevState => ({
             ...prevState,
             selectedTimeZone: event.target.value
@@ -66,9 +62,6 @@ class Clock extends Component<Props, State> {
         } else {
             return (
                 <>
-                    {/* <TimeZoneSelect
-                        timezones={["America/Nassau", "Europe/London"]}
-                    /> */}
                     <TimeZoneSelect
                         timezones={this.state.timeZones}
                         handleTimeZoneOnChange={this.handleTimeZoneOnChange}
