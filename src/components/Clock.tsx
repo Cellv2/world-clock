@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import ClockFace from "./ClockFace";
 import TimeZoneSelect from "./TimeZoneSelect";
+import AreaSelect from "./AreaSelect"
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 
@@ -9,6 +10,8 @@ import { WorldTimeApiResponseSchema } from "../models/time-types";
 type Props = {};
 type State = {
     time: WorldTimeApiResponseSchema;
+    areas: string[];
+    selectedArea: string;
     timeZones: string[];
     selectedTimeZone: string;
 };
@@ -21,11 +24,16 @@ class Clock extends Component<Props, State> {
 
         fetch("http://worldtimeapi.org/api/timezone")
             .then(res => res.json())
-            .then((json: string[]) =>
+            .then((json: string[]) => {
+                const areas: string[] = json.map(area => {
+                    return area.split("/")[0]
+                });
+                const uniqueAreas = [...Array.from(new Set(areas))]
+
                 this.setState(
-                    { timeZones: json, selectedTimeZone: initialTZ },
+                    { timeZones: json, selectedTimeZone: initialTZ, areas: uniqueAreas },
                     () => console.log(json)
-                )
+                )}
             );
 
         this.fetchTime(initialTZ);
@@ -57,6 +65,16 @@ class Clock extends Component<Props, State> {
             );
     }
 
+    handleAreaSelectOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        event.preventDefault();
+        event.persist();
+
+        this.setState(prevState => ({
+            ...prevState,
+            selectedArea: event.target.value
+        }));
+    }
+
     handleTimeZoneOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         event.preventDefault();
         event.persist();
@@ -70,11 +88,13 @@ class Clock extends Component<Props, State> {
     };
 
     render() {
-        if (this.state === null || this.state.time === null || this.state.timeZones === null) {
+        if (this.state === null || this.state.time === null || this.state.timeZones === null || this.state.areas === null) {
             return <div>Reaching out to the APIs...</div>;
         } else {
             return (
                 <>
+                    <AreaSelect handleAreaSelectOnChange={this.handleAreaSelectOnChange} areas={this.state.areas} />
+                    <br />
                     <TimeZoneSelect
                         timezones={this.state.timeZones}
                         handleTimeZoneOnChange={this.handleTimeZoneOnChange}
