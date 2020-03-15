@@ -5,6 +5,7 @@ import TimeZoneSelect from "./TimeZoneSelect";
 import AreaSelect from "./AreaSelect"
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
+import RegionSelect from "./RegionSelect";
 
 
 type Props = {};
@@ -12,6 +13,8 @@ type State = {
     time: WorldTimeApiResponseSchema;
     areas: string[];
     selectedArea: string;
+    regions: string[] | WorldTimeApiResponseSchema;
+    selectionRegion: string;
     timeZones: string[];
     selectedTimeZone: string;
 };
@@ -31,9 +34,13 @@ class Clock extends Component<Props, State> {
                 const uniqueAreas = [...Array.from(new Set(areas))]
 
                 this.setState(
-                    { timeZones: json, selectedTimeZone: initialTZ, areas: uniqueAreas },
+                    {
+                        timeZones: json,
+                        selectedTimeZone: initialTZ,
+                        areas: uniqueAreas
+                    },
                     () => console.log(json)
-                )}
+                );}
             );
 
         this.fetchTime(initialTZ);
@@ -69,9 +76,41 @@ class Clock extends Component<Props, State> {
         event.preventDefault();
         event.persist();
 
+        fetch(`http://worldtimeapi.org/api/timezone/${event.target.value}`)
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+
+                this.setState(prevState =>({
+                    ...prevState,
+                    regions: json
+                }))
+            });
+
         this.setState(prevState => ({
             ...prevState,
             selectedArea: event.target.value
+        }));
+    }
+
+    handleRegionSelectOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        event.preventDefault();
+        event.persist();
+
+        // fetch(`http://worldtimeapi.org/api/timezone/${event.target.value}`)
+        //     .then(res => res.json())
+        //     .then(json => {
+        //         console.log(json);
+
+        //         this.setState(prevState =>({
+        //             ...prevState,
+        //             regions: json
+        //         }))
+        //     });
+
+        this.setState(prevState => ({
+            ...prevState,
+            selectionRegion: event.target.value
         }));
     }
 
@@ -93,7 +132,21 @@ class Clock extends Component<Props, State> {
         } else {
             return (
                 <>
-                    <AreaSelect handleAreaSelectOnChange={this.handleAreaSelectOnChange} areas={this.state.areas} />
+                    <AreaSelect
+                        handleAreaSelectOnChange={this.handleAreaSelectOnChange}
+                        areas={this.state.areas}
+                        selectedArea={this.state.selectedArea}
+                    />
+                    <br />
+                    <>
+                        {this.state.regions ? (
+                            <RegionSelect
+                                regions={this.state.regions}
+                                handleRegionSelectOnChange={this.handleRegionSelectOnChange}
+                                selectedRegion={this.state.selectionRegion}
+                            />
+                        ) : <div>Please select an area</div> }
+                    </>
                     <br />
                     <TimeZoneSelect
                         timezones={this.state.timeZones}
