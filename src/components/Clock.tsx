@@ -28,10 +28,11 @@ class Clock extends Component<Props, State> {
         fetch("http://worldtimeapi.org/api/timezone")
             .then(res => res.json())
             .then((json: string[]) => {
+                // response will always be area/region per the API schema, so we want arr[1]
                 const areas: string[] = json.map(area => {
-                    return area.split("/")[0]
+                    return area.split("/")[0];
                 });
-                const uniqueAreas = [...Array.from(new Set(areas))]
+                const uniqueAreas = [...Array.from(new Set(areas))];
 
                 this.setState(
                     {
@@ -40,8 +41,8 @@ class Clock extends Component<Props, State> {
                         areas: uniqueAreas
                     },
                     () => console.log(json)
-                );}
-            );
+                );
+            });
 
         this.fetchTime(initialTZ);
     }
@@ -78,19 +79,30 @@ class Clock extends Component<Props, State> {
 
         fetch(`http://worldtimeapi.org/api/timezone/${event.target.value}`)
             .then(res => res.json())
-            .then(json => {
+            .then((json: string[] | WorldTimeApiResponseSchema) => {
                 console.log(json);
 
-                this.setState(prevState =>({
-                    ...prevState,
-                    regions: json
-                }))
-            });
+                // must do a check to see whether or not this is an array - if it is, then we cannot use .map
+                if (Array.isArray(json)) {
+                    // response will always be area/region per the API schema, so we want arr[1]
+                    const regions: string[] = json.map(region => {
+                        return region.split("/")[1];
+                    });
+                    const uniqueRegions = [...Array.from(new Set(regions))];
 
-        this.setState(prevState => ({
-            ...prevState,
-            selectedArea: event.target.value
-        }));
+                    this.setState(prevState => ({
+                        ...prevState,
+                        regions: uniqueRegions,
+                        selectedArea: event.target.value
+                    }));
+                } else {
+                    this.setState(prevState => ({
+                        ...prevState,
+                        regions: json,
+                        selectedArea: event.target.value
+                    }));
+                }
+            });
     }
 
     handleRegionSelectOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
