@@ -13,15 +13,18 @@ const RegionSelect = (props: Props) => {
 
     if (Array.isArray(regions)) {
         return (
-            <select onChange={props.handleRegionSelectOnChange} value={selectedRegion}>
-                {regions.map(region => {
-                    return <option key={region}>{region}</option>;
-                })}
-            </select>
+            <label>
+                Region:&nbsp;
+                <select onChange={props.handleRegionSelectOnChange} value={selectedRegion}>
+                    {regions.map(region => {
+                        return <option key={region}>{region}</option>;
+                    })}
+                </select>
+            </label>
         );
     }
 
-    return <div>No regions available</div>;
+    return <div>No regions available for the selected area</div>;
 };
 
 export default RegionSelect;
