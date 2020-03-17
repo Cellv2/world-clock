@@ -9,11 +9,14 @@ type Props = {
 const AreaSelect = (props: Props) => {
     const { areas, selectedArea } = props;
     return (
-        <select onChange={props.handleAreaSelectOnChange} value={selectedArea}>
-            {areas.map(area => {
-                return <option key={area}>{area}</option>;
-            })}
-        </select>
+        <label>
+            Area:&nbsp;
+            <select onChange={props.handleAreaSelectOnChange} value={selectedArea}>
+                {areas.map(area => {
+                    return <option key={area}>{area}</option>;
+                })}
+            </select>
+        </label>
     );
 };
 

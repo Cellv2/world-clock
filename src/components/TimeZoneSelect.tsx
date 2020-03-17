@@ -14,11 +14,17 @@ const TimeZoneSelect = (props: Props) => {
     }
 
     return (
-        <select onChange={props.handleTimeZoneOnChange} value={selectedTimeZone}>
-            {timezones.map(timezone => {
-                return <option key={timezone}>{timezone}</option>;
-            })}
-        </select>
+        <label>
+            TimeZone:&nbsp;
+            <select
+                onChange={props.handleTimeZoneOnChange}
+                value={selectedTimeZone}
+            >
+                {timezones.map(timezone => {
+                    return <option key={timezone}>{timezone}</option>;
+                })}
+            </select>
+        </label>
     );
 };
 
