@@ -34,14 +34,11 @@ class Clock extends Component<Props, State> {
                 });
                 const uniqueAreas = [...Array.from(new Set(areas))];
 
-                this.setState(
-                    {
-                        timeZones: json,
-                        selectedTimeZone: initialTZ,
-                        areas: uniqueAreas
-                    }
-                    // ,() => console.log(json)
-                );
+                this.setState({
+                    timeZones: json,
+                    selectedTimeZone: initialTZ,
+                    areas: uniqueAreas
+                });
             });
 
         this.fetchTime(initialTZ);
@@ -157,10 +154,14 @@ class Clock extends Component<Props, State> {
                         {this.state.regions ? (
                             <RegionSelect
                                 regions={this.state.regions}
-                                handleRegionSelectOnChange={this.handleRegionSelectOnChange}
+                                handleRegionSelectOnChange={
+                                    this.handleRegionSelectOnChange
+                                }
                                 selectedRegion={this.state.selectedRegion}
                             />
-                        ) : <div>Please select an area</div> }
+                        ) : (
+                            <div>Please select an area</div>
+                        )}
                     </>
                     <br />
                     <TimeZoneSelect
