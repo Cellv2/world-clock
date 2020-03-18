@@ -39,8 +39,8 @@ class Clock extends Component<Props, State> {
                         timeZones: json,
                         selectedTimeZone: initialTZ,
                         areas: uniqueAreas
-                    },
-                    () => console.log(json)
+                    }
+                    // ,() => console.log(json)
                 );
             });
 
@@ -82,7 +82,7 @@ class Clock extends Component<Props, State> {
             .then((json: string[] | WorldTimeApiResponseSchema) => {
                 console.log(json);
 
-                // must do a check to see whether or not this is an array - if it is, then we cannot use .map
+                //if it's an array then it's got regions as well, else we update the time
                 if (Array.isArray(json)) {
                     // response will always be area/region per the API schema, so we want arr[1]
                     const regions: string[] = json.map(region => {
@@ -92,17 +92,23 @@ class Clock extends Component<Props, State> {
 
                     this.setState(prevState => ({
                         ...prevState,
-                        regions: uniqueRegions,
-                        selectedArea: event.target.value
+                        regions: uniqueRegions
                     }));
                 } else {
-                    this.setState(prevState => ({
-                        ...prevState,
-                        regions: json,
-                        selectedArea: event.target.value
-                    }));
+                    this.setState(
+                        prevState => ({
+                            ...prevState,
+                            regions: json
+                        }),
+                        () => this.fetchTime(event.target.value)
+                    );
                 }
             });
+
+        this.setState(prevState => ({
+            ...prevState,
+            selectedArea: event.target.value
+        }));
     }
 
     handleRegionSelectOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
