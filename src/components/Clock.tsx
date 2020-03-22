@@ -28,7 +28,7 @@ class Clock extends Component<Props, State> {
         fetch("http://worldtimeapi.org/api/timezone")
             .then(res => res.json())
             .then((json: string[]) => {
-                // response will always be area/region per the API schema, so we want arr[1]
+                // response will always be area/region per the API schema, so we want arr[0]
                 const areas: string[] = json.map(area => {
                     return area.split("/")[0];
                 });
