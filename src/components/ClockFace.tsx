@@ -16,7 +16,7 @@ const ClockFace = (props: Props) => {
 
     const { unixtime, raw_offset, dst_offset } = props.time;
 
-    const adjustedTime = unixtime + raw_offset + (dst_offset || 0);
+    const adjustedTime = unixtime - raw_offset - (dst_offset || 0);
 
     const date = new Date(adjustedTime * 1000);
     const hours = "0" + date.getHours();
