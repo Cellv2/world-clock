@@ -23,7 +23,7 @@ class Clock extends Component<Props, State> {
     timer!: NodeJS.Timeout;
 
     componentDidMount() {
-        const initialTZ = "Etc/UTC";
+        const initialTZ = "ip";
 
         fetch("http://worldtimeapi.org/api/timezone")
             .then(res => res.json())
@@ -36,7 +36,6 @@ class Clock extends Component<Props, State> {
 
                 this.setState({
                     timeZones: json,
-                    selectedTimeZone: initialTZ,
                     areas: uniqueAreas
                 });
             });
@@ -49,7 +48,12 @@ class Clock extends Component<Props, State> {
     }
 
     fetchTime = (tZ: string) => {
-        fetch(`http://worldtimeapi.org/api/timezone/${tZ}`)
+        const baseApiUrl = "http://worldtimeapi.org/api/"
+
+        // a call to IP does not include /timezone, so we need to do a check to see
+        const apiToCall = tZ !== "ip" ? `${baseApiUrl}/timezone/${tZ}` : `${baseApiUrl}/${tZ}`;
+
+        fetch(apiToCall)
             .then(res => res.json())
             .then((json: WorldTimeApiResponseSchema) =>
                 this.setState({ time: json }, () => {
