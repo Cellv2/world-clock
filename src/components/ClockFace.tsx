@@ -24,7 +24,12 @@ const ClockFace = (props: Props) => {
     const secs = "0" + date.getSeconds();
     const formattedTime = hours.substr(-2) + ":" + mins.substr(-2) + ":" + secs.substr(-2);
 
-    return <div>{formattedTime}</div>;
+    return (
+        <div>
+            <p>Currently selected time zone is {(props.time.timezone).replace("/", ", ")}</p>
+            <p>The current time is: {formattedTime}</p>
+        </div>
+    );
 };
 
 export default ClockFace;
