@@ -2,6 +2,8 @@ import React from "react";
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 
+import styles from './ClockFace.module.scss'
+
 type Props = {
     time: WorldTimeApiResponseSchema;
     usingIp: boolean;
@@ -26,7 +28,7 @@ const ClockFace = (props: Props) => {
     const formattedTime = hours.substr(-2) + ":" + mins.substr(-2) + ":" + secs.substr(-2);
 
     return (
-        <div>
+        <div className={styles.red}>
             <p>Currently selected time zone is {(props.time.timezone).replace("/", ", ")}</p>
             <p>The current time is: {formattedTime}</p>
             {props.usingIp && <p>This was based off of your public IP</p>}

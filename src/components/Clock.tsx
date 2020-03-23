@@ -151,6 +151,8 @@ class Clock extends Component<Props, State> {
         } else {
             return (
                 <>
+                    <ClockFace time={this.state.time} usingIp={this.state.usingIP} />
+                    <br />
                     <AreaSelect
                         handleAreaSelectOnChange={this.handleAreaSelectOnChange}
                         areas={this.state.areas}
@@ -177,7 +179,6 @@ class Clock extends Component<Props, State> {
                         selectedTimeZone={this.state.selectedTimeZone}
                     />
                     <br /> */}
-                    <ClockFace time={this.state.time} usingIp={this.state.usingIP} />
                 </>
             );
         }
