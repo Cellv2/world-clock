@@ -4,6 +4,7 @@ import { WorldTimeApiResponseSchema } from "../models/time-types";
 
 type Props = {
     time: WorldTimeApiResponseSchema;
+    usingIp: boolean;
 };
 
 /**
@@ -28,6 +29,7 @@ const ClockFace = (props: Props) => {
         <div>
             <p>Currently selected time zone is {(props.time.timezone).replace("/", ", ")}</p>
             <p>The current time is: {formattedTime}</p>
+            {props.usingIp && <p>This was based off of your public IP</p>}
         </div>
     );
 };

@@ -17,6 +17,7 @@ type State = {
     selectedRegion: string;
     timeZones: string[];
     selectedTimeZone: string;
+    usingIP: boolean;
 };
 
 class Clock extends Component<Props, State> {
@@ -55,8 +56,10 @@ class Clock extends Component<Props, State> {
 
         fetch(apiToCall)
             .then(res => res.json())
-            .then((json: WorldTimeApiResponseSchema) =>
-                this.setState({ time: json }, () => {
+            .then((json: WorldTimeApiResponseSchema) =>{
+                const _tempUsingIp: boolean = tZ === "ip";
+
+                this.setState({ time: json, usingIP: _tempUsingIp }, () => {
 
                     console.log(json);
 
@@ -70,7 +73,7 @@ class Clock extends Component<Props, State> {
                             time: tempTime
                         }));
                     }, 1000);
-                })
+                })}
             );
     }
 
@@ -168,13 +171,13 @@ class Clock extends Component<Props, State> {
                         )}
                     </>
                     <br />
-                    <TimeZoneSelect
+                    {/* <TimeZoneSelect
                         timezones={this.state.timeZones}
                         handleTimeZoneOnChange={this.handleTimeZoneOnChange}
                         selectedTimeZone={this.state.selectedTimeZone}
                     />
-                    <br />
-                    <ClockFace time={this.state.time} />
+                    <br /> */}
+                    <ClockFace time={this.state.time} usingIp={this.state.usingIP} />
                 </>
             );
         }
