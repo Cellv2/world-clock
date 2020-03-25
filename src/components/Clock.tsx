@@ -3,13 +3,18 @@ import React, { Component } from "react";
 import ClockFace from "./ClockFace";
 import TimeZoneSelect from "./TimeZoneSelect";
 import AreaSelect from "./AreaSelect"
+import RegionSelect from "./RegionSelect";
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
-import RegionSelect from "./RegionSelect";
+import { handleFetchErrors } from "../helpers/error-helpers";
 
 
 type Props = {};
 type State = {
+    errorObj: {
+        activeError: boolean;
+        error: any;
+    }
     time: WorldTimeApiResponseSchema;
     areas: string[];
     selectedArea: string;
@@ -27,7 +32,7 @@ class Clock extends Component<Props, State> {
         const initialTZ = "ip";
 
         fetch("http://worldtimeapi.org/api/timezone")
-            .then(res => res.json())
+            .then(handleFetchErrors)
             .then((json: string[]) => {
                 // response will always be area/region per the API schema, so we want arr[0]
                 const areas: string[] = json.map(area => {
@@ -37,11 +42,30 @@ class Clock extends Component<Props, State> {
 
                 this.setState({
                     timeZones: json,
-                    areas: uniqueAreas
-                });
+                    areas: uniqueAreas,
+                    errorObj: {
+                        activeError: false,
+                        error: null
+                    }
+                },
+                    () => this.fetchTime(initialTZ)
+                );
+            })
+            .catch((err: any) => {
+                console.error("Something went wrong with the request - Is the API down for maintenance? The error is: ");
+                console.error(err);
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        activeError: true,
+                        error: err
+                    }
+                }));
             });
 
-        this.fetchTime(initialTZ);
+            //  this.fetchTime(initialTZ);
+
     }
 
     componentWillUnmount() {
@@ -49,13 +73,13 @@ class Clock extends Component<Props, State> {
     }
 
     fetchTime = (tZ: string) => {
-        const baseApiUrl = "http://worldtimeapi.org/api/"
+        const baseApiUrl = "http://worldtimeapi.org/api"
 
         // a call to IP does not include /timezone, so we need to do a check to see
         const apiToCall = tZ !== "ip" ? `${baseApiUrl}/timezone/${tZ}` : `${baseApiUrl}/${tZ}`;
 
         fetch(apiToCall)
-            .then(res => res.json())
+            .then(handleFetchErrors)
             .then((json: WorldTimeApiResponseSchema) =>{
                 const _tempUsingIp: boolean = tZ === "ip";
 
@@ -74,7 +98,8 @@ class Clock extends Component<Props, State> {
                         }));
                     }, 1000);
                 })}
-            );
+            )
+            .catch(err => console.error(err));
     }
 
     handleAreaSelectOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -82,7 +107,7 @@ class Clock extends Component<Props, State> {
         event.persist();
 
         fetch(`http://worldtimeapi.org/api/timezone/${event.target.value}`)
-            .then(res => res.json())
+            .then(handleFetchErrors)
             .then((json: string[] | WorldTimeApiResponseSchema) => {
                 console.log(json);
 
@@ -107,7 +132,8 @@ class Clock extends Component<Props, State> {
                         () => this.fetchTime(event.target.value)
                     );
                 }
-            });
+            })
+            .catch(err => console.error(err));
 
         this.setState(prevState => ({
             ...prevState,
@@ -146,7 +172,13 @@ class Clock extends Component<Props, State> {
     };
 
     render() {
-        if (this.state === null || this.state.time === null || this.state.timeZones === null || this.state.areas === null) {
+        if (this.state !== null && this.state.errorObj.activeError) {
+            return <div>
+                <p>Sorry, something went wrong when trying to hit the APIs</p>
+                <p>Is <a href="http://worldtimeapi.org/"><em>worldtimeapi.org/</em></a> down?</p>
+                <p>The error was: {this.state.errorObj.error.stack}</p>
+            </div>
+        } else if (this.state === null || this.state.time === null || this.state.timeZones === null || this.state.areas === null) {
             return <div>Reaching out to the APIs...</div>;
         } else {
             return (
