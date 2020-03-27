@@ -8,6 +8,8 @@ import RegionSelect from "./RegionSelect";
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 import { handleFetchErrors } from "../helpers/error-helpers";
 
+import styles from "./Clock.module.scss";
+
 
 type Props = {};
 type State = {
@@ -201,7 +203,7 @@ class Clock extends Component<Props, State> {
                                 selectedRegion={this.state.selectedRegion}
                             />
                         ) : (
-                            <div>Please select an area</div>
+                            <div className={styles.notAvailable}>Please select an area</div>
                         )}
                     </>
                     <br />

@@ -2,6 +2,8 @@ import React from "react";
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 
+import styles from "./RegionSelect.module.scss";
+
 type Props = {
     regions: string[] | WorldTimeApiResponseSchema;
     handleRegionSelectOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -24,7 +26,7 @@ const RegionSelect = (props: Props) => {
         );
     }
 
-    return <div>No regions available for the selected area</div>;
+    return <div className={styles.notAvailable}>No regions available for the selected area</div>;
 };
 
 export default RegionSelect;

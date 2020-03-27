@@ -1,5 +1,11 @@
 @import "styles/_colours.scss";
 
-.red {
-    background-color: $primary-color;
+.clockFace {
+    border: 1px solid $main-brand;
+    padding: 2rem;
+}
+
+.ipText {
+    font-size: medium;
+    color: $light-accent;
 }

@@ -1,5 +1,7 @@
 import React from "react";
 
+import styles from "./AreaSelect.module.scss"
+
 type Props = {
     areas: string[];
     handleAreaSelectOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -22,7 +24,7 @@ const AreaSelect = (props: Props) => {
         );
     }
 
-    return <div>No areas available</div>;
+    return <div className={styles.notAvailable}>No areas available</div>;
 };
 
 export default AreaSelect;

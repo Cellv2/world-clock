@@ -28,10 +28,10 @@ const ClockFace = (props: Props) => {
     const formattedTime = hours.substr(-2) + ":" + mins.substr(-2) + ":" + secs.substr(-2);
 
     return (
-        <div className={styles.red}>
+        <div className={styles.clockFace}>
             <p>Currently selected time zone is {(props.time.timezone).replace("/", ", ")}</p>
             <p>The current time is: {formattedTime}</p>
-            {props.usingIp && <p>This was based off of your public IP</p>}
+            {props.usingIp && <p className={styles.ipText}><em>This was based off of your public IP</em></p>}
         </div>
     );
 };
