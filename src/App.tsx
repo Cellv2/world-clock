@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 
 import Clock from "./components/Clock";
 

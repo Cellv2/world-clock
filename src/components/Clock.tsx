@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import ClockFace from "./ClockFace";
-import TimeZoneSelect from "./TimeZoneSelect";
 import AreaSelect from "./AreaSelect"
 import RegionSelect from "./RegionSelect";
 
@@ -207,12 +206,6 @@ class Clock extends Component<Props, State> {
                         )}
                     </>
                     <br />
-                    {/* <TimeZoneSelect
-                        timezones={this.state.timeZones}
-                        handleTimeZoneOnChange={this.handleTimeZoneOnChange}
-                        selectedTimeZone={this.state.selectedTimeZone}
-                    />
-                    <br /> */}
                 </>
             );
         }
