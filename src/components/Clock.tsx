@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ValueType } from "react-select";
 
 import ClockFace from "./ClockFace";
 import AreaSelect from "./AreaSelect"
@@ -170,7 +171,21 @@ class Clock extends Component<Props, State> {
             ...prevState,
             selectedTimeZone: event.target.value
         }));
+
+        console.log(event.target.value)
     };
+
+    handleXChange = (event: ValueType<{value: string, label: string}>) => {
+        const value = (event as {value: string, label: string}).value;
+        console.log(value)
+
+        // this.fetchTime(value);
+
+        this.setState((prevState) => ({
+            ...prevState,
+            selectedArea: value,
+        }));
+    }
 
     render() {
         if (this.state !== null && this.state.errorObj.activeError) {
@@ -190,6 +205,7 @@ class Clock extends Component<Props, State> {
                         handleAreaSelectOnChange={this.handleAreaSelectOnChange}
                         areas={this.state.areas}
                         selectedArea={this.state.selectedArea}
+                        xChange={this.handleXChange}
                     />
                     <br />
                     <>

@@ -4,10 +4,15 @@ import Clock from "./components/Clock";
 
 import styles from "./App.module.scss";
 
+import Dropdown from "./components/Dropdown";
+
 function App() {
     return (
         <div className={styles.app}>
-            <Clock />
+            <div className="container">
+                <Dropdown />
+                <Clock />
+            </div>
         </div>
     );
 }
