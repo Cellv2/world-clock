@@ -175,11 +175,41 @@ class Clock extends Component<Props, State> {
         console.log(event.target.value)
     };
 
+    // TODO: Make these the normal ones
     handleXChange = (event: ValueType<{value: string, label: string}>) => {
-        const value = (event as {value: string, label: string}).value;
-        console.log(value)
+        const value = (event as {
+            value: string;
+            label: string;
+        }).value;
 
-        // this.fetchTime(value);
+        fetch(`http://worldtimeapi.org/api/timezone/${value}`)
+            .then(handleFetchErrors)
+            .then((json: string[] | WorldTimeApiResponseSchema) => {
+                console.log(json);
+
+                //if it's an array then it's got regions as well, else we update the time
+                if (Array.isArray(json)) {
+                    // response will always be area/region per the API schema, so we want arr[1]
+                    const regions: string[] = json.map((region) => {
+                        return region.split("/")[1];
+                    });
+                    const uniqueRegions = [...Array.from(new Set(regions))];
+
+                    this.setState((prevState) => ({
+                        ...prevState,
+                        regions: uniqueRegions,
+                    }));
+                } else {
+                    this.setState(
+                        (prevState) => ({
+                            ...prevState,
+                            regions: json,
+                        }),
+                        () => this.fetchTime(value)
+                    );
+                }
+            })
+            .catch((err) => console.error(err));
 
         this.setState((prevState) => ({
             ...prevState,
