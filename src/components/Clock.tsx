@@ -217,6 +217,24 @@ class Clock extends Component<Props, State> {
         }));
     }
 
+    yChange = (event: ValueType<{value: string, label: string}>) => {
+
+        const value = (event as { value: string; label: string }).value;
+
+        console.log(value);
+
+        this.setState(
+            (prevState) => ({
+                ...prevState,
+                selectedRegion: value,
+            }),
+            () =>
+                this.fetchTime(
+                    `${this.state.selectedArea}/${this.state.selectedRegion}`
+                )
+        );
+    }
+
     render() {
         if (this.state !== null && this.state.errorObj.activeError) {
             return <div>
@@ -246,6 +264,7 @@ class Clock extends Component<Props, State> {
                                     this.handleRegionSelectOnChange
                                 }
                                 selectedRegion={this.state.selectedRegion}
+                                yChange={this.yChange}
                             />
                         ) : (
                             <div className={styles.notAvailable}>Please select an area</div>
