@@ -13,16 +13,21 @@ type Props = {
 const AreaSelect = (props: Props) => {
     const { areas, selectedArea } = props;
 
-    const selectOptions = areas.map((area) => {
-        return { label: area, value: area };
-    });
 
     if (Array.isArray(areas)) {
+        //this should always be an array, but let's be on the safe side
+        const selectOptions = areas.map((area) => {
+            return { label: area, value: area };
+        });
+
         return (
             <>
                 <label>
                     Area:&nbsp;
-                    <select onChange={props.handleAreaSelectOnChange} value={selectedArea}>
+                    <select
+                        onChange={props.handleAreaSelectOnChange}
+                        value={selectedArea}
+                    >
                         {areas.map((area) => {
                             return <option key={area}>{area}</option>;
                         })}
