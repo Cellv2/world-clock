@@ -1,5 +1,5 @@
 import React from "react";
-import Dropdown, { ValueType } from "react-select";
+import { ValueType } from "react-select";
 
 import CustomDropdown from './CustomDropdown'
 
