@@ -33,7 +33,7 @@ const AreaSelect = (props: Props) => {
                         })}
                     </select>
                 </label>
-                <Dropdown options={selectOptions} onChange={props.xChange} />
+                <Dropdown options={selectOptions} onChange={props.xChange} isSearchable={true} />
             </>
         );
     }

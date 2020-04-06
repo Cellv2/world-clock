@@ -25,13 +25,20 @@ const RegionSelect = (props: Props) => {
             <>
                 <label>
                     Region:&nbsp;
-                    <select onChange={props.handleRegionSelectOnChange} value={selectedRegion}>
+                    <select
+                        onChange={props.handleRegionSelectOnChange}
+                        value={selectedRegion}
+                    >
                         {regions.map((region) => {
                             return <option key={region}>{region}</option>;
                         })}
                     </select>
                 </label>
-                <Dropdown options={selectOptions} onChange={props.yChange} />
+                <Dropdown
+                    options={selectOptions}
+                    onChange={props.yChange}
+                    isSearchable={true}
+                />
             </>
         );
     }
