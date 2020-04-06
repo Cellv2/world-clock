@@ -13,22 +13,22 @@ type Props = {
 const AreaSelect = (props: Props) => {
     const { areas, selectedArea } = props;
 
-    const selectOptions = areas.map(area => {
+    const selectOptions = areas.map((area) => {
         return { label: area, value: area };
-    })
+    });
 
     if (Array.isArray(areas)) {
         return (
             <>
-            <label>
-                Area:&nbsp;
-                <select onChange={props.handleAreaSelectOnChange} value={selectedArea}>
-                    {areas.map(area => {
-                        return <option key={area}>{area}</option>;
-                    })}
-                </select>
-            </label>
-            <Dropdown options={selectOptions} onChange={props.xChange} />
+                <label>
+                    Area:&nbsp;
+                    <select onChange={props.handleAreaSelectOnChange} value={selectedArea}>
+                        {areas.map((area) => {
+                            return <option key={area}>{area}</option>;
+                        })}
+                    </select>
+                </label>
+                <Dropdown options={selectOptions} onChange={props.xChange} />
             </>
         );
     }
