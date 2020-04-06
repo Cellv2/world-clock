@@ -35,7 +35,7 @@ const ClockFace = (props: Props) => {
             <p>Currently selected time zone is {(props.time.timezone).replace("/", ", ")}</p>
             {props.usingIp && <p className={styles.ipText}><em>This was based off of your public IP</em></p>}
             <p>The current time is: {formattedTime}</p>
-            {dst && <p className={styles.ipText}><em>You are currently in Daylight Saving Time (+{dstInHours}h)</em></p>}
+            {dst && <p className={styles.ipText}><em>{props.usingIp ? "You are" : "This time zone is"} currently in Daylight Saving Time (+{dstInHours}h)</em></p>}
         </div>
     );
 };
