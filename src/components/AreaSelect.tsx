@@ -1,5 +1,7 @@
 import React from "react";
-import Dropdown, { ValueType } from "react-select";
+import { ValueType } from "react-select";
+
+import CustomDropdown from "./CustomDropdown"
 
 import styles from "./AreaSelect.module.scss"
 
@@ -7,12 +9,11 @@ type Props = {
     areas: string[];
     handleAreaSelectOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     selectedArea: string;
-    xChange: (event: ValueType<{value: string, label: string}>) => void;
+    handleAreaOnChange: (event: ValueType<{value: string, label: string}>) => void;
 };
 
 const AreaSelect = (props: Props) => {
     const { areas, selectedArea } = props;
-
 
     if (Array.isArray(areas)) {
         //this should always be an array, but let's be on the safe side
@@ -21,20 +22,9 @@ const AreaSelect = (props: Props) => {
         });
 
         return (
-            <>
-                <label>
-                    Area:&nbsp;
-                    <select
-                        onChange={props.handleAreaSelectOnChange}
-                        value={selectedArea}
-                    >
-                        {areas.map((area) => {
-                            return <option key={area}>{area}</option>;
-                        })}
-                    </select>
-                </label>
-                <Dropdown options={selectOptions} onChange={props.xChange} isSearchable={true} />
-            </>
+            //TODO: Wtf is this 'value does not exist on type 'IntrinsicAttributes & Props'.ts(2322)'
+            //@ts-ignore
+            <CustomDropdown options={selectOptions} handleOnChange={props.handleAreaOnChange} value={selectedArea} label="Area:" />
         );
     }
 

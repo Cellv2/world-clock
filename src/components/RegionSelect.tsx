@@ -1,6 +1,8 @@
 import React from "react";
 import Dropdown, { ValueType } from "react-select";
 
+import CustomDropdown from './CustomDropdown'
+
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 
 import styles from "./RegionSelect.module.scss";
@@ -9,7 +11,7 @@ type Props = {
     regions: string[] | WorldTimeApiResponseSchema;
     handleRegionSelectOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     selectedRegion: string;
-    yChange?: (event: ValueType<{value: string, label: string}>) => void;
+    handleRegionOnChange: (event: ValueType<{value: string, label: string}>) => void;
 };
 
 const RegionSelect = (props: Props) => {
@@ -22,24 +24,9 @@ const RegionSelect = (props: Props) => {
         });
 
         return (
-            <>
-                <label>
-                    Region:&nbsp;
-                    <select
-                        onChange={props.handleRegionSelectOnChange}
-                        value={selectedRegion}
-                    >
-                        {regions.map((region) => {
-                            return <option key={region}>{region}</option>;
-                        })}
-                    </select>
-                </label>
-                <Dropdown
-                    options={selectOptions}
-                    onChange={props.yChange}
-                    isSearchable={true}
-                />
-            </>
+            //TODO: Wtf is this 'value does not exist on type 'IntrinsicAttributes & Props'.ts(2322)'
+            //@ts-ignore
+            <CustomDropdown options={selectOptions} handleOnChange={props.handleRegionOnChange} value={selectedRegion} label="Region:" />
         );
     }
 

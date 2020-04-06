@@ -176,7 +176,7 @@ class Clock extends Component<Props, State> {
     };
 
     // TODO: Make these the normal ones
-    handleXChange = (event: ValueType<{value: string, label: string}>) => {
+    handleAreaOnChange = (event: ValueType<{value: string, label: string}>) => {
         const value = (event as {
             value: string;
             label: string;
@@ -217,12 +217,8 @@ class Clock extends Component<Props, State> {
         }));
     }
 
-    yChange = (event: ValueType<{value: string, label: string}>) => {
-
+    handleRegionOnChange = (event: ValueType<{value: string, label: string}>) => {
         const value = (event as { value: string; label: string }).value;
-
-        console.log(value);
-
         this.setState(
             (prevState) => ({
                 ...prevState,
@@ -253,7 +249,7 @@ class Clock extends Component<Props, State> {
                         handleAreaSelectOnChange={this.handleAreaSelectOnChange}
                         areas={this.state.areas}
                         selectedArea={this.state.selectedArea}
-                        xChange={this.handleXChange}
+                        handleAreaOnChange={this.handleAreaOnChange}
                     />
                     <br />
                     <>
@@ -264,7 +260,7 @@ class Clock extends Component<Props, State> {
                                     this.handleRegionSelectOnChange
                                 }
                                 selectedRegion={this.state.selectedRegion}
-                                yChange={this.yChange}
+                                handleRegionOnChange={this.handleRegionOnChange}
                             />
                         ) : (
                             <div className={styles.notAvailable}>Please select an area</div>
