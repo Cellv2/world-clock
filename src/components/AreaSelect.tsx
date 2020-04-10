@@ -20,11 +20,10 @@ const AreaSelect = (props: Props) => {
         const selectOptions = areas.map((area) => {
             return { label: area, value: area };
         });
+        const selectedAreaValue = { label: selectedArea, value: selectedArea };
 
         return (
-            //TODO: Wtf is this 'value does not exist on type 'IntrinsicAttributes & Props'.ts(2322)'
-            //@ts-ignore
-            <CustomDropdown options={selectOptions} handleOnChange={props.handleAreaOnChange} value={selectedArea} label="Area:" />
+            <CustomDropdown options={selectOptions} handleOnChange={props.handleAreaOnChange} value={selectedAreaValue} name="Area:" label="Area:" />
         );
     }
 

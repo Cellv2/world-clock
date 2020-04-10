@@ -17,16 +17,14 @@ type Props = {
 const RegionSelect = (props: Props) => {
     const { regions, selectedRegion } = props;
 
-
     if (Array.isArray(regions)) {
         const selectOptions = regions.map((region) => {
             return { value: region, label: region };
         });
+        const selectedRegionValue = { label: selectedRegion, value: selectedRegion };
 
         return (
-            //TODO: Wtf is this 'value does not exist on type 'IntrinsicAttributes & Props'.ts(2322)'
-            //@ts-ignore
-            <CustomDropdown options={selectOptions} handleOnChange={props.handleRegionOnChange} value={selectedRegion} label="Region:" />
+            <CustomDropdown options={selectOptions} handleOnChange={props.handleRegionOnChange} value={selectedRegionValue} name="Region:" label="Region:" />
         );
     }
 
