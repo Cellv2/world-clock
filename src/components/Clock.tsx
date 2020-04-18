@@ -251,22 +251,16 @@ class Clock extends Component<Props, State> {
                         selectedArea={this.state.selectedArea}
                         handleAreaOnChange={this.handleAreaOnChange}
                     />
-                    <br />
-                    <>
-                        {this.state.regions ? (
-                            <RegionSelect
-                                regions={this.state.regions}
-                                handleRegionSelectOnChange={
-                                    this.handleRegionSelectOnChange
-                                }
-                                selectedRegion={this.state.selectedRegion}
-                                handleRegionOnChange={this.handleRegionOnChange}
-                            />
-                        ) : (
-                            <div className={styles.notAvailable}>Please select an area</div>
-                        )}
-                    </>
-                    <br />
+                    {this.state.regions && (
+                        <RegionSelect
+                            regions={this.state.regions}
+                            handleRegionSelectOnChange={
+                                this.handleRegionSelectOnChange
+                            }
+                            selectedRegion={this.state.selectedRegion}
+                            handleRegionOnChange={this.handleRegionOnChange}
+                        />
+                    )}
                 </>
             );
         }

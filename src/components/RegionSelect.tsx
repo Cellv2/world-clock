@@ -24,7 +24,23 @@ const RegionSelect = (props: Props) => {
         const selectedRegionValue = { label: selectedRegion, value: selectedRegion };
 
         return (
-            <CustomDropdown options={selectOptions} handleOnChange={props.handleRegionOnChange} value={selectedRegionValue} name="Region:" label="Region:" />
+            <>
+                <CustomDropdown
+                    options={selectOptions}
+                    handleOnChange={props.handleRegionOnChange}
+                    value={selectedRegionValue}
+                    name="Region:"
+                    label="Region:"
+                />
+                {!selectedRegion && (
+                    <>
+                        <br />
+                        <div className={styles.notAvailable}>
+                            Please select a region
+                        </div>
+                    </>
+                )}
+            </>
         );
     }
 

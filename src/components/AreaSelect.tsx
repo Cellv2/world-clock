@@ -15,15 +15,31 @@ type Props = {
 const AreaSelect = (props: Props) => {
     const { areas, selectedArea } = props;
 
+    //this should always be an array, but let's be on the safe side
     if (Array.isArray(areas)) {
-        //this should always be an array, but let's be on the safe side
         const selectOptions = areas.map((area) => {
             return { label: area, value: area };
         });
         const selectedAreaValue = { label: selectedArea, value: selectedArea };
 
         return (
-            <CustomDropdown options={selectOptions} handleOnChange={props.handleAreaOnChange} value={selectedAreaValue} name="Area:" label="Area:" />
+            <>
+                <CustomDropdown
+                    options={selectOptions}
+                    handleOnChange={props.handleAreaOnChange}
+                    value={selectedAreaValue}
+                    name="Area:"
+                    label="Area:"
+                />
+                {!selectedArea && (
+                    <>
+                        <br />
+                        <div className={styles.notAvailable}>
+                            Please select an area
+                        </div>
+                    </>
+                )}
+            </>
         );
     }
 
