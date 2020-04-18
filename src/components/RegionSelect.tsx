@@ -4,6 +4,7 @@ import { ValueType } from "react-select";
 import CustomDropdown from './CustomDropdown'
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
+import { replaceUnderscoreWithWhitespace } from "../helpers/utils";
 
 import styles from "./RegionSelect.module.scss";
 
@@ -18,7 +19,10 @@ const RegionSelect = (props: Props) => {
 
     if (Array.isArray(regions)) {
         const selectOptions = regions.map((region) => {
-            return { value: region, label: region };
+            return {
+                value: region,
+                label: replaceUnderscoreWithWhitespace(region),
+            };
         });
         const selectedRegionValue = { label: selectedRegion, value: selectedRegion };
 

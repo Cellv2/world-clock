@@ -3,6 +3,8 @@ import { ValueType } from "react-select";
 
 import CustomDropdown from "./CustomDropdown"
 
+import { replaceUnderscoreWithWhitespace } from "../helpers/utils";
+
 import styles from "./AreaSelect.module.scss"
 
 type Props = {
@@ -17,7 +19,10 @@ const AreaSelect = (props: Props) => {
     //this should always be an array, but let's be on the safe side
     if (Array.isArray(areas)) {
         const selectOptions = areas.map((area) => {
-            return { label: area, value: area };
+            return {
+                label: area,
+                value: replaceUnderscoreWithWhitespace(area),
+            };
         });
         const selectedAreaValue = { label: selectedArea, value: selectedArea };
 

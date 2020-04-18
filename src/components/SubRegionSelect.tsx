@@ -3,6 +3,8 @@ import { ValueType } from "react-select";
 
 import CustomDropdown from './CustomDropdown'
 
+import { replaceUnderscoreWithWhitespace } from "../helpers/utils";
+
 import styles from "./SubRegionSelect.module.scss";
 
 type Props = {
@@ -16,7 +18,10 @@ const SubRegionSelect = (props: Props) => {
 
     if (Array.isArray(subRegions)) {
         const selectOptions = subRegions.map((subRegion) => {
-            return { value: subRegion, label: subRegion.split("/")[1] };
+            return {
+                label: replaceUnderscoreWithWhitespace(subRegion.split("/")[1]),
+                value: subRegion,
+            };
         });
         const selectedSubRegionValue = { label: selectedSubRegion, value: selectedSubRegion };
 

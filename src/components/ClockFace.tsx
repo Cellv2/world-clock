@@ -1,6 +1,7 @@
 import React from "react";
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
+import { replaceUnderscoreWithWhitespace } from "../helpers/utils";
 
 import styles from './ClockFace.module.scss'
 
@@ -42,7 +43,7 @@ const ClockFace = (props: Props) => {
 
     return (
         <div className={styles.clockFace}>
-            <p>Currently selected time zone is {(props.time.timezone).replace(/\//g, ", ")}</p>
+            <p>Currently selected time zone is {replaceUnderscoreWithWhitespace((props.time.timezone).replace(/\//g, ", "))}</p>
             {props.usingIp && <p className={styles.ipText}><em>This was based off of your public IP</em></p>}
             <p>The current time is: <time dateTime={`${date}`}>{formattedTime}</time></p>
             {dst && <p className={styles.ipText}><em>{props.usingIp ? "You are" : "This time zone is"} currently in Daylight Saving Time (+{dstInHours}h)</em></p>}
