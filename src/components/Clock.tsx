@@ -8,9 +8,6 @@ import RegionSelect from "./RegionSelect";
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 import { handleFetchErrors } from "../helpers/error-helpers";
 
-import styles from "./Clock.module.scss";
-
-
 type Props = {};
 type State = {
     errorObj: {
@@ -23,7 +20,6 @@ type State = {
     regions: string[] | WorldTimeApiResponseSchema;
     selectedRegion: string;
     timeZones: string[];
-    selectedTimeZone: string;
     usingIP: boolean;
 };
 
@@ -104,78 +100,6 @@ class Clock extends Component<Props, State> {
             .catch(err => console.error(err));
     }
 
-    handleAreaSelectOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        event.preventDefault();
-        event.persist();
-
-        fetch(`http://worldtimeapi.org/api/timezone/${event.target.value}`)
-            .then(handleFetchErrors)
-            .then((json: string[] | WorldTimeApiResponseSchema) => {
-                console.log(json);
-
-                //if it's an array then it's got regions as well, else we update the time
-                if (Array.isArray(json)) {
-                    // response will always be area/region per the API schema, so we want arr[1]
-                    const regions: string[] = json.map(region => {
-                        return region.split("/")[1];
-                    });
-                    const uniqueRegions = [...Array.from(new Set(regions))];
-
-                    this.setState(prevState => ({
-                        ...prevState,
-                        regions: uniqueRegions
-                    }));
-                } else {
-                    this.setState(
-                        prevState => ({
-                            ...prevState,
-                            regions: json
-                        }),
-                        () => this.fetchTime(event.target.value)
-                    );
-                }
-            })
-            .catch(err => console.error(err));
-
-        this.setState(prevState => ({
-            ...prevState,
-            selectedArea: event.target.value
-        }));
-    }
-
-    handleRegionSelectOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        event.preventDefault();
-        event.persist();
-
-        console.log(event.target.value);
-
-        this.setState(
-            prevState => ({
-                ...prevState,
-                selectedRegion: event.target.value
-            }),
-            () =>
-                this.fetchTime(
-                    `${this.state.selectedArea}/${this.state.selectedRegion}`
-                )
-        );
-    }
-
-    handleTimeZoneOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        event.preventDefault();
-        event.persist();
-
-        this.fetchTime(event.target.value);
-
-        this.setState(prevState => ({
-            ...prevState,
-            selectedTimeZone: event.target.value
-        }));
-
-        console.log(event.target.value)
-    };
-
-    // TODO: Make these the normal ones
     handleAreaOnChange = (event: ValueType<{value: string, label: string}>) => {
         const value = (event as {
             value: string;
@@ -246,7 +170,6 @@ class Clock extends Component<Props, State> {
                     <ClockFace time={this.state.time} usingIp={this.state.usingIP} />
                     <br />
                     <AreaSelect
-                        handleAreaSelectOnChange={this.handleAreaSelectOnChange}
                         areas={this.state.areas}
                         selectedArea={this.state.selectedArea}
                         handleAreaOnChange={this.handleAreaOnChange}
@@ -254,9 +177,6 @@ class Clock extends Component<Props, State> {
                     {this.state.regions && (
                         <RegionSelect
                             regions={this.state.regions}
-                            handleRegionSelectOnChange={
-                                this.handleRegionSelectOnChange
-                            }
                             selectedRegion={this.state.selectedRegion}
                             handleRegionOnChange={this.handleRegionOnChange}
                         />

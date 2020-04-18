@@ -9,7 +9,6 @@ import styles from "./RegionSelect.module.scss";
 
 type Props = {
     regions: string[] | WorldTimeApiResponseSchema;
-    handleRegionSelectOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     selectedRegion: string;
     handleRegionOnChange: (event: ValueType<{value: string, label: string}>) => void;
 };

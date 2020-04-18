@@ -7,7 +7,6 @@ import styles from "./AreaSelect.module.scss"
 
 type Props = {
     areas: string[];
-    handleAreaSelectOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     selectedArea: string;
     handleAreaOnChange: (event: ValueType<{value: string, label: string}>) => void;
 };
