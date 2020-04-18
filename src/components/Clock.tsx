@@ -19,6 +19,8 @@ type State = {
     selectedArea: string;
     regions: string[] | WorldTimeApiResponseSchema;
     selectedRegion: string;
+    subRegions: string[];
+    selectedSubRegion: string;
     timeZones: string[];
     usingIP: boolean;
 };
@@ -106,6 +108,7 @@ class Clock extends Component<Props, State> {
             label: string;
         }).value;
 
+
         fetch(`http://worldtimeapi.org/api/timezone/${value}`)
             .then(handleFetchErrors)
             .then((json: string[] | WorldTimeApiResponseSchema) => {
@@ -113,17 +116,37 @@ class Clock extends Component<Props, State> {
 
                 //if it's an array then it's got regions as well, else we update the time
                 if (Array.isArray(json)) {
-                    // response will always be area/region per the API schema, so we want arr[1]
+                    // response should be timezone/region/subregion
+                    // we already have the timezones, so we want both region ([1]) and subregion if available ([2])
+                    let regionsx: string[] = [];
+                    let subRegionsx: string[] = [];
+                    json.forEach((item: string) => {
+                        // console.log(item);
+                        const splitItem = item.split("/");
+                        console.log(splitItem)
+                        if (splitItem.length > 2) {
+                            regionsx.push(splitItem[1]);
+                            subRegionsx.push(splitItem[2]);
+                        } else {
+                            regionsx.push(splitItem[1]);
+                        }
+                    })
+                    console.log(regionsx);
+                    console.log(subRegionsx);
+
                     const regions: string[] = json.map((region) => {
                         return region.split("/")[1];
                     });
                     const uniqueRegions = [...Array.from(new Set(regions))];
+                    const uniqueRegionsx = [...Array.from(new Set(regionsx))];
 
                     this.setState((prevState) => ({
                         ...prevState,
-                        regions: uniqueRegions,
+                        regions: uniqueRegionsx,
+                        subRegions: subRegionsx
                     }));
                 } else {
+                    // used in case the result is actually a time zone (such as 'CET' or 'EST')
                     this.setState(
                         (prevState) => ({
                             ...prevState,
@@ -181,6 +204,15 @@ class Clock extends Component<Props, State> {
                             handleRegionOnChange={this.handleRegionOnChange}
                         />
                     )}
+                    {this.state.subRegions && this.state.selectedRegion &&
+                    (<>
+                        <select name="" id="">
+                            {this.state.subRegions.map(subRegion => {
+                                return <option key={subRegion}>{subRegion}</option>;
+                            })}
+                        </select>
+                    </>)
+                    }
                 </>
             );
         }
