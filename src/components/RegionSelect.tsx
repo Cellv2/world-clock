@@ -37,7 +37,6 @@ const RegionSelect = (props: Props) => {
                 />
                 {!selectedRegion && (
                     <>
-                        <br />
                         <div className={styles.notAvailable}>
                             Please select a region
                         </div>

@@ -37,7 +37,6 @@ const AreaSelect = (props: Props) => {
                 />
                 {!selectedArea && (
                     <>
-                        <br />
                         <div className={styles.notAvailable}>
                             Please select an area
                         </div>
