@@ -4,6 +4,7 @@ import { ValueType } from "react-select";
 import ClockFace from "./ClockFace";
 import AreaSelect from "./AreaSelect"
 import RegionSelect from "./RegionSelect";
+import SubRegionSelect from './SubRegionSelect'
 
 import { WorldTimeApiResponseSchema } from "../models/time-types";
 import { handleFetchErrors } from "../helpers/error-helpers";
@@ -19,7 +20,7 @@ type State = {
     selectedArea: string;
     regions: string[] | WorldTimeApiResponseSchema;
     selectedRegion: string;
-    subRegions: string[];
+    subRegions: string[]; // this should be a string like 'region/subregion', so you will need to split it
     selectedSubRegion: string;
     timeZones: string[];
     usingIP: boolean;
@@ -118,32 +119,24 @@ class Clock extends Component<Props, State> {
                 if (Array.isArray(json)) {
                     // response should be timezone/region/subregion
                     // we already have the timezones, so we want both region ([1]) and subregion if available ([2])
-                    let regionsx: string[] = [];
-                    let subRegionsx: string[] = [];
+                    let regions: string[] = [];
+                    let subRegions: string[] = [];
                     json.forEach((item: string) => {
-                        // console.log(item);
                         const splitItem = item.split("/");
-                        console.log(splitItem)
                         if (splitItem.length > 2) {
-                            regionsx.push(splitItem[1]);
-                            subRegionsx.push(splitItem[2]);
+                            regions.push(splitItem[1]);
+                            subRegions.push(`${splitItem[1]}/${splitItem[2]}`);
                         } else {
-                            regionsx.push(splitItem[1]);
+                            regions.push(splitItem[1]);
                         }
-                    })
-                    console.log(regionsx);
-                    console.log(subRegionsx);
-
-                    const regions: string[] = json.map((region) => {
-                        return region.split("/")[1];
                     });
+
                     const uniqueRegions = [...Array.from(new Set(regions))];
-                    const uniqueRegionsx = [...Array.from(new Set(regionsx))];
 
                     this.setState((prevState) => ({
                         ...prevState,
-                        regions: uniqueRegionsx,
-                        subRegions: subRegionsx
+                        regions: uniqueRegions,
+                        subRegions: subRegions,
                     }));
                 } else {
                     // used in case the result is actually a time zone (such as 'CET' or 'EST')
@@ -151,6 +144,7 @@ class Clock extends Component<Props, State> {
                         (prevState) => ({
                             ...prevState,
                             regions: json,
+                            subRegions: [],
                         }),
                         () => this.fetchTime(value)
                     );
@@ -170,10 +164,27 @@ class Clock extends Component<Props, State> {
             (prevState) => ({
                 ...prevState,
                 selectedRegion: value,
+                selectedSubRegion: "",
             }),
             () =>
                 this.fetchTime(
                     `${this.state.selectedArea}/${this.state.selectedRegion}`
+                )
+        );
+    }
+
+    // TODO: ??
+    // This could be done nicer, and even merged into handleRegionOnChange through a 'type' param, but is it worth it for like 10 lines of code?
+    handleSubRegionOnChange = (event: ValueType<{value: string, label: string}>) => {
+        const value = (event as { value: string; label: string }).value;
+        this.setState(
+            (prevState) => ({
+                ...prevState,
+                selectedSubRegion: value,
+            }),
+            () =>
+                this.fetchTime(
+                    `${this.state.selectedArea}/${this.state.selectedSubRegion}`
                 )
         );
     }
@@ -188,6 +199,15 @@ class Clock extends Component<Props, State> {
         } else if (this.state === null || this.state.time === null || this.state.timeZones === null || this.state.areas === null) {
             return <div>Reaching out to the APIs...</div>;
         } else {
+            let filteredSubRegions: string[] = [];
+            if (this.state.subRegions && this.state.subRegions.length > 0 && this.state.selectedRegion) {
+                filteredSubRegions = this.state.subRegions.filter(subRegion => {
+                    return (
+                        subRegion.split("/")[0] === this.state.selectedRegion
+                    );
+                })
+            }
+
             return (
                 <>
                     <ClockFace time={this.state.time} usingIp={this.state.usingIP} />
@@ -204,14 +224,12 @@ class Clock extends Component<Props, State> {
                             handleRegionOnChange={this.handleRegionOnChange}
                         />
                     )}
-                    {this.state.subRegions && this.state.selectedRegion &&
-                    (<>
-                        <select name="" id="">
-                            {this.state.subRegions.map(subRegion => {
-                                return <option key={subRegion}>{subRegion}</option>;
-                            })}
-                        </select>
-                    </>)
+                    {filteredSubRegions.length > 0 &&
+                        <SubRegionSelect
+                        subRegions={filteredSubRegions}
+                        selectedSubRegion={this.state.selectedSubRegion}
+                        handleSubRegionOnChange={this.handleSubRegionOnChange}
+                        />
                     }
                 </>
             );
