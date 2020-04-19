@@ -20,8 +20,8 @@ const RegionSelect = (props: Props) => {
     if (Array.isArray(regions)) {
         const selectOptions = regions.map((region) => {
             return {
-                value: region,
                 label: replaceUnderscoreWithWhitespace(region),
+                value: region,
             };
         });
         const selectedRegionValue = { label: selectedRegion, value: selectedRegion };
