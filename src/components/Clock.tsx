@@ -160,16 +160,33 @@ class Clock extends Component<Props, State> {
 
     handleRegionOnChange = (event: ValueType<{value: string, label: string}>) => {
         const value = (event as { value: string; label: string }).value;
+
         this.setState(
             (prevState) => ({
                 ...prevState,
                 selectedRegion: value,
                 selectedSubRegion: "",
             }),
-            () =>
-                this.fetchTime(
-                    `${this.state.selectedArea}/${this.state.selectedRegion}`
-                )
+            () => {
+                // need to do this here as selectedRegion is actually set in the setState directly above
+                let filteredSubRegions: string[] = [];
+                if (this.state.subRegions && this.state.subRegions.length > 0 && this.state.selectedRegion) {
+                    filteredSubRegions = this.state.subRegions.filter(
+                        (subRegion) => {
+                            return (
+                                subRegion.split("/")[0] ===
+                                this.state.selectedRegion
+                            );
+                        }
+                    );
+                }
+
+                if (filteredSubRegions.length === 0) {
+                    this.fetchTime(
+                        `${this.state.selectedArea}/${this.state.selectedRegion}`
+                    );
+                }
+            }
         );
     }
 
