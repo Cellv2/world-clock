@@ -25,7 +25,7 @@ type Props = {
     label: string;
     name: string;
     handleOnChange: (event: ValueType<{value: string, label: string}>) => void;
-    value: ValueType<{value: string, label: string}>; //we do this to keep in line with the react-select's API (https://react-select.com/props#statemanager-props)
+    value: ValueType<{value: string, label: string}> | null; //we do this to keep in line with the react-select's API (https://react-select.com/props#statemanager-props)
 }
 
 const CustomDropdown = (props: Props) => {
@@ -38,6 +38,7 @@ const CustomDropdown = (props: Props) => {
             components={{
                 ValueContainer: CustomValueContainer,
             }}
+            value={props.value === null ? null : props.value}
             styles={{
                 container: (provided, state) => ({
                     ...provided,

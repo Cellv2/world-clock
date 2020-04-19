@@ -17,11 +17,11 @@ type State = {
     }
     time: WorldTimeApiResponseSchema;
     areas: string[];
-    selectedArea: string;
+    selectedArea: string | null;
     regions: string[] | WorldTimeApiResponseSchema;
-    selectedRegion: string;
+    selectedRegion: string | null;
     subRegions: string[]; // this should be a string like 'region/subregion', so you will need to split it
-    selectedSubRegion: string;
+    selectedSubRegion: string | null;
     timeZones: string[];
     usingIP: boolean;
 };
@@ -44,6 +44,7 @@ class Clock extends Component<Props, State> {
                 this.setState({
                     timeZones: json,
                     areas: uniqueAreas,
+                    selectedArea: null,
                     errorObj: {
                         activeError: false,
                         error: null
@@ -136,6 +137,7 @@ class Clock extends Component<Props, State> {
                     this.setState((prevState) => ({
                         ...prevState,
                         regions: uniqueRegions,
+                        selectedRegion: null,
                         subRegions: subRegions,
                     }));
                 } else {
@@ -165,7 +167,7 @@ class Clock extends Component<Props, State> {
             (prevState) => ({
                 ...prevState,
                 selectedRegion: value,
-                selectedSubRegion: "",
+                selectedSubRegion: null,
             }),
             () => {
                 // need to do this here as selectedRegion is actually set in the setState directly above

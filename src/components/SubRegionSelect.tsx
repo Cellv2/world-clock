@@ -9,7 +9,7 @@ import styles from "./SubRegionSelect.module.scss";
 
 type Props = {
     subRegions: string[];
-    selectedSubRegion: string;
+    selectedSubRegion: string | null;
     handleSubRegionOnChange: (event: ValueType<{value: string, label: string}>) => void;
 }
 
@@ -23,7 +23,7 @@ const SubRegionSelect = (props: Props) => {
                 value: subRegion,
             };
         });
-        const selectedSubRegionValue = { label: selectedSubRegion, value: selectedSubRegion };
+        const selectedSubRegionValue = selectedSubRegion !== null ? { label: selectedSubRegion, value: selectedSubRegion } : null;
 
         return (
             <>

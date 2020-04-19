@@ -10,7 +10,7 @@ import styles from "./RegionSelect.module.scss";
 
 type Props = {
     regions: string[] | WorldTimeApiResponseSchema;
-    selectedRegion: string;
+    selectedRegion: string | null;
     handleRegionOnChange: (event: ValueType<{value: string, label: string}>) => void;
 };
 
@@ -24,7 +24,7 @@ const RegionSelect = (props: Props) => {
                 value: region,
             };
         });
-        const selectedRegionValue = { label: selectedRegion, value: selectedRegion };
+        const selectedRegionValue = selectedRegion !== null ?  { label: selectedRegion, value: selectedRegion } : null;
 
         return (
             <>

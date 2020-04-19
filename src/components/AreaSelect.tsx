@@ -9,7 +9,7 @@ import styles from "./AreaSelect.module.scss"
 
 type Props = {
     areas: string[];
-    selectedArea: string;
+    selectedArea: string | null;
     handleAreaOnChange: (event: ValueType<{value: string, label: string}>) => void;
 };
 
@@ -24,7 +24,7 @@ const AreaSelect = (props: Props) => {
                 value: replaceUnderscoreWithWhitespace(area),
             };
         });
-        const selectedAreaValue = { label: selectedArea, value: selectedArea };
+        const selectedAreaValue = selectedArea !== null ? { label: selectedArea, value: selectedArea } : null;
 
         return (
             <>
