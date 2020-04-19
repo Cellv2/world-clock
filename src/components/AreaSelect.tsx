@@ -3,7 +3,7 @@ import { ValueType } from "react-select";
 
 import CustomDropdown from "./CustomDropdown"
 
-import { replaceUnderscoreWithWhitespace } from "../helpers/utils";
+import { replaceSlashAndUnderscore } from "../helpers/utils";
 
 import styles from "./AreaSelect.module.scss"
 
@@ -20,11 +20,17 @@ const AreaSelect = (props: Props) => {
     if (Array.isArray(areas)) {
         const selectOptions = areas.map((area) => {
             return {
-                label: area,
-                value: replaceUnderscoreWithWhitespace(area),
+                label: replaceSlashAndUnderscore(area),
+                value: area,
             };
         });
-        const selectedAreaValue = selectedArea !== null ? { label: selectedArea, value: selectedArea } : null;
+        const selectedAreaValue =
+            selectedArea !== null
+                ? {
+                      label: replaceSlashAndUnderscore(selectedArea),
+                      value: selectedArea,
+                  }
+                : null;
 
         return (
             <>

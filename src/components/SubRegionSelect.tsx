@@ -3,7 +3,7 @@ import { ValueType } from "react-select";
 
 import CustomDropdown from './CustomDropdown'
 
-import { replaceUnderscoreWithWhitespace } from "../helpers/utils";
+import { replaceSlashAndUnderscore } from "../helpers/utils";
 
 import styles from "./SubRegionSelect.module.scss";
 
@@ -19,11 +19,19 @@ const SubRegionSelect = (props: Props) => {
     if (Array.isArray(subRegions)) {
         const selectOptions = subRegions.map((subRegion) => {
             return {
-                label: replaceUnderscoreWithWhitespace(subRegion.split("/")[1]),
+                label: replaceSlashAndUnderscore(subRegion.split("/")[1]),
                 value: subRegion,
             };
         });
-        const selectedSubRegionValue = selectedSubRegion !== null ? { label: selectedSubRegion, value: selectedSubRegion } : null;
+        const selectedSubRegionValue =
+            selectedSubRegion !== null
+                ? {
+                      label: replaceSlashAndUnderscore(
+                          selectedSubRegion.split("/")[1]
+                      ),
+                      value: selectedSubRegion,
+                  }
+                : null;
 
         return (
             <>
