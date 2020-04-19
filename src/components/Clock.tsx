@@ -89,16 +89,20 @@ class Clock extends Component<Props, State> {
 
                     console.log(json);
 
-                    clearInterval(this.timer);
+                    // clearInterval(this.timer);
 
-                    this.timer = setInterval(() => {
-                        const tempTime = this.state.time;
-                        tempTime.unixtime++;
-                        this.setState(prevState => ({
-                            ...prevState,
-                            time: tempTime
-                        }));
-                    }, 1000);
+                    // this.timer = setInterval(() => {
+                    //     const tempTime = this.state.time;
+                    //     tempTime.unixtime++;
+
+                    //     const x = new Date(this.state.time.datetime)
+                    //     // console.log(x.toString())
+                    //     // console.log(Date.parse(x.toString()))
+                    //     this.setState(prevState => ({
+                    //         ...prevState,
+                    //         time: tempTime
+                    //     }));
+                    // }, 1000);
                 })}
             )
             .catch(err => console.error(err));
@@ -215,7 +219,7 @@ class Clock extends Component<Props, State> {
                 <p>Is <a href="http://worldtimeapi.org/"><em>worldtimeapi.org/</em></a> down?</p>
                 <p>The error was: {this.state.errorObj.error.stack}</p>
             </div>
-        } else if (this.state === null || this.state.time === null || this.state.timeZones === null || this.state.areas === null) {
+        } else if (this.state === null || this.state.time === null || this.state.time === undefined || this.state.timeZones === null || this.state.areas === null) {
             return <div>Reaching out to the APIs...</div>;
         } else {
             let filteredSubRegions: string[] = [];
