@@ -7,7 +7,7 @@ import styles from "./App.module.scss";
 function App() {
     return (
         <div className={styles.app}>
-            <div className="container">
+            <div className={styles.container}>
                 <Clock />
             </div>
         </div>
