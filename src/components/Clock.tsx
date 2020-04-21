@@ -65,9 +65,6 @@ class Clock extends Component<Props, State> {
                     }
                 }));
             });
-
-            //  this.fetchTime(initialTZ);
-
     }
 
     componentWillUnmount() {
@@ -103,8 +100,6 @@ class Clock extends Component<Props, State> {
         fetch(`http://worldtimeapi.org/api/timezone/${value}`)
             .then(handleFetchErrors)
             .then((json: string[] | WorldTimeApiResponseSchema) => {
-                console.log(json);
-
                 //if it's an array then it's got regions as well, else we update the time
                 if (Array.isArray(json)) {
                     // response should be timezone/region/subregion
