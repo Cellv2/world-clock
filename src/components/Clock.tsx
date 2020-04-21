@@ -82,32 +82,15 @@ class Clock extends Component<Props, State> {
 
         fetch(apiToCall)
             .then(handleFetchErrors)
-            .then((json: WorldTimeApiResponseSchema) =>{
+            .then((json: WorldTimeApiResponseSchema) => {
                 const _tempUsingIp: boolean = tZ === "ip";
 
-                this.setState({ time: json, usingIP: _tempUsingIp }, () => {
-
-                    console.log("time was updated")
-
-                    // console.log(json);
-
-                    // clearInterval(this.timer);
-
-                    // this.timer = setInterval(() => {
-                    //     const tempTime = this.state.time;
-                    //     tempTime.unixtime++;
-
-                    //     const x = new Date(this.state.time.datetime)
-                    //     // console.log(x.toString())
-                    //     // console.log(Date.parse(x.toString()))
-                    //     this.setState(prevState => ({
-                    //         ...prevState,
-                    //         time: tempTime
-                    //     }));
-                    // }, 1000);
-                })}
-            )
-            .catch(err => console.error(err));
+                this.setState({
+                    time: json,
+                    usingIP: _tempUsingIp,
+                });
+            })
+            .catch((err) => console.error(err));
     }
 
     handleAreaOnChange = (event: ValueType<{value: string, label: string}>) => {
