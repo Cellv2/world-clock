@@ -3,7 +3,7 @@
 export type WorldTimeApiResponseSchema = {
     abbreviation: string;
     client_ip: string;
-    datetime: Date;
+    datetime: number;
     day_of_week: number;
     day_of_year: number;
     dst: boolean;
