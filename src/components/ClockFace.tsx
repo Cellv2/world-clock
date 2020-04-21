@@ -26,9 +26,10 @@ class ClockFace extends Component<Props, State> {
     componentDidMount() {
         // const _tempUsingIp: boolean = tZ === "ip";
         const x = new Date(this.props.time.datetime);
-        console.log(x.toString())
-        console.log(Date.parse(x.toString()))
+        // console.log(x.toString())
+        // console.log(Date.parse(x.toString()))
         const tempIntervalUnixTime = Date.parse(x.toString());
+        console.log("original time", this.props.time)
 
         this.setState({ time: this.props.time, intervalUnixTime: tempIntervalUnixTime }, () => {
             // console.log(json);
@@ -54,12 +55,14 @@ class ClockFace extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        if (prevProps.time.timezone === this.state.time.timezone) {
+        if (prevProps.time.timezone === this.props.time.timezone) {
             return false;
         } else {
+
+            // console.log(json);
             const x = new Date(this.props.time.datetime);
-            console.log(x.toString());
-            console.log(Date.parse(x.toString()));
+            // console.log(x.toString());
+            // console.log(Date.parse(x.toString()));
             const tempIntervalUnixTime = Date.parse(x.toString());
 
             this.setState(
@@ -68,9 +71,45 @@ class ClockFace extends Component<Props, State> {
                     intervalUnixTime: tempIntervalUnixTime,
                 },
                 () => {
-                    // console.log(json);
-
                     clearInterval(this.timer);
+
+
+                    // console.log(this.props.time)
+                    // const d = Date.parse(`${this.props.time.datetime}`)
+                    // console.log("date.parse", d)
+                    // // const e = new Date(d);
+                    // const e = new Date(this.props.time.unixtime * 1000);
+                    // console.log("new Date", e)
+                    // console.log(this.props.time)
+                    // console.log(this.props.time)
+
+                    // const t = Math.round((new Date(this.props.time.datetime)).getTime()/1000);
+                    // console.log(t)
+                    // // console.log(Date.parse(t))
+                    // console.log(new Date(t*1000))
+
+                    // console.log("this was called!")
+
+                    console.log(this.state.time)
+                    console.log("getTime", new Date(this.state.time.datetime).getTime()/1000);
+                    console.log("unixtime", this.state.time.unixtime)
+
+                    // const raw_offset = this.state.time.raw_offset;
+                    // const dst_offset = this.state.time.dst_offset;
+
+                    const { dst_offset, raw_offset, unixtime } = this.state.time;
+
+
+                    const adjustedUnixTime = unixtime + raw_offset// + (dst_offset !== null ? dst_offset : 0);
+
+                    console.log(adjustedUnixTime)
+                    const time = new Date(adjustedUnixTime * 1000)
+                    console.log("time", time)
+
+                    const adjustedUnixTimex = unixtime + raw_offset + (dst_offset !== null ? dst_offset : 0);
+                    let timex = new Date(adjustedUnixTimex * 1000);
+                    timex.setTime(timex.getTime() + timex.getTimezoneOffset() * 60 * 1000)
+                    console.log("timex", timex)
 
                     // this.timer = setInterval(() => {})
 
@@ -100,7 +139,7 @@ class ClockFace extends Component<Props, State> {
     }
 
     render() {
-        if (!this.props.time) {
+        if (!this.props.time || !this.state) {
             return <div>Fetching time...</div>;
         }
 
@@ -117,7 +156,8 @@ class ClockFace extends Component<Props, State> {
 
         // const date = new Date(props.time.datetime);
         // const date = new Date(adjustedTime * 1000);
-        const date = new Date(adjustedTime * 1000);
+        // const date = new Date(adjustedTime * 1000);
+        const date = new Date(this.state.time.unixtime * 1000);
         const hours = "0" + date.getHours();
         const mins = "0" + date.getMinutes();
         const secs = "0" + date.getSeconds();

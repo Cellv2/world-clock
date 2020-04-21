@@ -87,7 +87,9 @@ class Clock extends Component<Props, State> {
 
                 this.setState({ time: json, usingIP: _tempUsingIp }, () => {
 
-                    console.log(json);
+                    console.log("time was updated")
+
+                    // console.log(json);
 
                     // clearInterval(this.timer);
 
