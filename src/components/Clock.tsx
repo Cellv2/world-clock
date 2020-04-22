@@ -32,7 +32,7 @@ class Clock extends Component<Props, State> {
     componentDidMount() {
         const initialTZ = "ip";
 
-        fetch("http://worldtimeapi.org/api/timezone")
+        fetch("https://worldtimeapi.org/api/timezone")
             .then(handleFetchErrors)
             .then((json: string[]) => {
                 // response will always be area/region per the API schema, so we want arr[0]
@@ -72,7 +72,7 @@ class Clock extends Component<Props, State> {
     }
 
     fetchTime = (tZ: string) => {
-        const baseApiUrl = "http://worldtimeapi.org/api"
+        const baseApiUrl = "https://worldtimeapi.org/api"
 
         // a call to IP does not include /timezone, so we need to do a check to see
         const apiToCall = tZ !== "ip" ? `${baseApiUrl}/timezone/${tZ}` : `${baseApiUrl}/${tZ}`;
@@ -97,7 +97,7 @@ class Clock extends Component<Props, State> {
         }).value;
 
 
-        fetch(`http://worldtimeapi.org/api/timezone/${value}`)
+        fetch(`https://worldtimeapi.org/api/timezone/${value}`)
             .then(handleFetchErrors)
             .then((json: string[] | WorldTimeApiResponseSchema) => {
                 //if it's an array then it's got regions as well, else we update the time
