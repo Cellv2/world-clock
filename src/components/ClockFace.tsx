@@ -70,22 +70,31 @@ class ClockFace extends Component<Props, State> {
 
         const { unixtime, raw_offset, dst_offset, dst } = this.state.time;
 
-        const adjustedTime = unixtime + raw_offset;
+        const adjustedTime: number = unixtime + raw_offset;
 
-        const date = new Date(adjustedTime * 1000);
+        const date: Date = new Date(adjustedTime * 1000);
         const hours = "0" + date.getHours();
         const mins = "0" + date.getMinutes();
         const secs = "0" + date.getSeconds();
-        const formattedTime = hours.substr(-2) + ":" + mins.substr(-2) + ":" + secs.substr(-2);
+        const formattedTime: string = hours.substr(-2) + ":" + mins.substr(-2) + ":" + secs.substr(-2);
 
-        const dstInHours = dst_offset ? (dst_offset / 60 / 60) : 0;
+        const dstInHours: number = dst_offset ? (dst_offset / 60 / 60) : 0;
+
+        // the local machine's day
+        const localDay: number = new Date(Date.now()).getDay();
+        // the timezone that is selected through the dropdown
+        const timezoneDay: number = date.getDay();
+        let dayComparisonWord: string = "Today";
+        if (localDay !== timezoneDay) {
+            dayComparisonWord = localDay > timezoneDay ? "Yesterday" : "Tomorrow";
+        }
 
         return (
             <div className={styles.clockFace}>
                 <p>Currently selected time zone is {replaceSlashAndUnderscore(this.state.time.timezone)}</p>
                 {this.props.usingIp && <p className={styles.ipText}><em>This was based off of your public IP</em></p>}
-                <p>The current time is: <time dateTime={`${date}`}>{formattedTime}</time></p>
-                {dst && <p className={styles.ipText}><em>{this.props.usingIp ? "You are" : "This time zone is"} currently in Daylight Saving Time (+{dstInHours}h)</em></p>}
+                <p>The current time is: <time dateTime={`${date}`}>{formattedTime}</time><sup className={`${styles.smallText} ${styles.superscriptItalics}`}>{dayComparisonWord}</sup></p>
+                {dst && <p className={styles.smallText}><em>{this.props.usingIp ? "You are" : "This time zone is"} currently in Daylight Saving Time (+{dstInHours}h)</em></p>}
             </div>
         );
     }

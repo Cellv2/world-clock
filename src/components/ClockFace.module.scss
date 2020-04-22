@@ -5,7 +5,18 @@
     padding: 2rem;
 }
 
-.ipText {
+.superscriptItalics {
+    font-size: medium;
+    color: $light-accent;
+    position: absolute;
+    font-style: italic;
+}
+
+.superscriptItalics::before {
+    content: "\00a0";
+}
+
+.smallText {
     font-size: medium;
     color: $light-accent;
 }
