@@ -84,7 +84,7 @@ class ClockFace extends Component<Props, State> {
         const localDay: number = new Date(Date.now()).getDay();
         // the timezone that is selected through the dropdown
         const timezoneDay: number = date.getDay();
-        let dayComparisonWord: string = "Today";
+        let dayComparisonWord: string = "";
         if (localDay !== timezoneDay) {
             dayComparisonWord = localDay > timezoneDay ? "Yesterday" : "Tomorrow";
         }
