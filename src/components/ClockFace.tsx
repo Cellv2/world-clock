@@ -92,7 +92,7 @@ class ClockFace extends Component<Props, State> {
         return (
             <div className={styles.clockFace}>
                 <p>Currently selected time zone is {replaceSlashAndUnderscore(this.state.time.timezone)}</p>
-                {this.props.usingIp && <p className={styles.ipText}><em>This was based off of your public IP</em></p>}
+                {this.props.usingIp && <p className={styles.smallText}><em>This was based off of your public IP</em></p>}
                 <p>The current time is: <time dateTime={`${date}`}>{formattedTime}</time><sup className={`${styles.smallText} ${styles.superscriptItalics}`}>{dayComparisonWord}</sup></p>
                 {dst && <p className={styles.smallText}><em>{this.props.usingIp ? "You are" : "This time zone is"} currently in Daylight Saving Time (+{dstInHours}h)</em></p>}
             </div>
